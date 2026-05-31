@@ -1,14 +1,15 @@
 # RLS Governance Demo
 
-An interactive static web app that demonstrates how row-level security (RLS) and governed data structure change what different users can see in safety, cost, and compliance reporting.
+An interactive static web app that demonstrates how row-level security (RLS) and governed data structure change what different users can see across safety, cost, compliance, and advanced analytics reporting.
 
-The demo lets viewers switch between personas, move across three reporting lenses, toggle RLS, reveal blocked records, and inspect the policy decisions behind each row.
+The demo lets viewers switch between personas, move across five reporting lenses, toggle RLS, reveal blocked records, and inspect the policy decisions behind each row.
 
 ## What It Shows
 
 - How the same site data changes for different roles and entitlements
 - How site, data domain, and sensitivity policies filter report rows
 - How safety can be the primary lens while finance and compliance remain governed
+- How leading indicators and predictive safety analytics can be shared without opening every row
 - How masking protects sensitive values while preserving approved context
 - How a governed data model creates auditable allow, deny, and mask decisions
 

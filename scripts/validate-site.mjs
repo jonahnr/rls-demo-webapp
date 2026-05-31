@@ -17,7 +17,7 @@ checks.push(["index.html loads app.js", html.includes('src="app.js"')]);
 checks.push(["RLS toggle exists", html.includes('id="rlsToggle"')]);
 checks.push(["lens selector exists", html.includes('id="lensList"')]);
 checks.push(["user and safety record data exists", js.includes("const users") && js.includes("const records")]);
-checks.push(["three reporting lenses exist", js.includes('id: "safety"') && js.includes('id: "cost"') && js.includes('id: "compliance"')]);
+checks.push(["five reporting lenses exist", js.includes('id: "safety"') && js.includes('id: "cost"') && js.includes('id: "compliance"') && js.includes('id: "leading"') && js.includes('id: "predictive"')]);
 checks.push(["policy data exists", js.includes("const policies")]);
 checks.push(["responsive styles exist", css.includes("@media")]);
 

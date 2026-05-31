@@ -1,21 +1,21 @@
 :root {
   color-scheme: light;
-  --bg: #f4f7f7;
-  --ink: #13212b;
-  --muted: #60717d;
-  --line: #d8e3e2;
+  --bg: #eef5ff;
+  --ink: #071d3a;
+  --muted: #5a6f8a;
+  --line: #c8d8ee;
   --panel: #ffffff;
-  --accent: #007f7a;
-  --accent-2: #7aa63a;
-  --accent-3: #ff8a3d;
-  --warn: #ad5f00;
-  --bad: #bd3430;
-  --deep: #173645;
-  --soft-blue: #e5f4f3;
-  --soft-green: #edf6e4;
-  --soft-orange: #fff1e8;
+  --accent: #2878f0;
+  --accent-2: #ffd229;
+  --accent-3: #0b2f63;
+  --warn: #956500;
+  --bad: #c93434;
+  --deep: #061936;
+  --soft-blue: #e7f0ff;
+  --soft-green: #eef8e7;
+  --soft-yellow: #fff7cf;
   --soft-red: #fff0ed;
-  --shadow: 0 18px 50px rgba(19, 45, 55, 0.1);
+  --shadow: 0 18px 50px rgba(7, 29, 58, 0.12);
 }
 
 * {
@@ -26,8 +26,8 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    linear-gradient(135deg, rgba(0, 127, 122, 0.12), transparent 34%),
-    linear-gradient(315deg, rgba(255, 138, 61, 0.12), transparent 28%),
+    linear-gradient(135deg, rgba(40, 120, 240, 0.18), transparent 34%),
+    linear-gradient(315deg, rgba(255, 210, 41, 0.22), transparent 28%),
     var(--bg);
   color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -76,6 +76,14 @@ h1 {
   letter-spacing: 0;
 }
 
+h1 span {
+  color: var(--accent);
+}
+
+#heroByWord {
+  color: #c89500;
+}
+
 h2 {
   margin-bottom: 0;
   font-size: 1.05rem;
@@ -107,7 +115,7 @@ h2 {
   display: grid;
   gap: 12px;
   padding: 22px;
-  border-top: 4px solid var(--accent-3);
+  border-top: 4px solid var(--accent-2);
 }
 
 .hero-panel div {
@@ -136,7 +144,7 @@ h2 {
 }
 
 .status-dot.active {
-  background: var(--accent-2);
+  background: #71b340;
 }
 
 .workspace {
@@ -152,6 +160,13 @@ h2 {
 
 .panel-header {
   margin-bottom: 14px;
+}
+
+.context-note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.38;
 }
 
 .panel-header.compact {
@@ -188,7 +203,7 @@ h2 {
   height: 42px;
   border-radius: 50%;
   color: #fff;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-3));
   font-weight: 900;
 }
 
@@ -244,7 +259,7 @@ h2 {
 
 .lens-panel {
   display: grid;
-  grid-template-columns: 230px minmax(0, 1fr);
+  grid-template-columns: 250px minmax(0, 1fr);
   gap: 16px;
   align-items: center;
   margin-bottom: 16px;
@@ -252,14 +267,20 @@ h2 {
   box-shadow: none;
 }
 
+#lensNarrative {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
 .lens-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10px;
 }
 
 .lens-card {
-  min-height: 82px;
+  min-height: 118px;
   padding: 12px;
   text-align: left;
   background: #fff;
@@ -271,12 +292,66 @@ h2 {
 .lens-card.active {
   border-color: var(--accent);
   background: var(--soft-blue);
-  box-shadow: inset 0 0 0 1px var(--accent);
+  box-shadow: inset 0 -4px 0 var(--accent-2), inset 0 0 0 1px var(--accent);
 }
 
 .lens-card strong,
 .lens-card small {
   display: block;
+}
+
+.lens-chip {
+  display: inline-flex;
+  min-height: 22px;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 2px 7px;
+  color: var(--deep);
+  background: var(--soft-yellow);
+  border: 1px solid rgba(255, 210, 41, 0.65);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.insight-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.insight-card {
+  min-height: 96px;
+  padding: 14px;
+  background: var(--deep);
+  color: #fff;
+  border-radius: 8px;
+}
+
+.insight-card:nth-child(2) {
+  background: #113e7d;
+}
+
+.insight-card:nth-child(3) {
+  background: var(--accent);
+}
+
+.insight-card span,
+.insight-card strong {
+  display: block;
+}
+
+.insight-card span {
+  color: #bdd5ff;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.insight-card strong {
+  margin-top: 8px;
+  line-height: 1.3;
 }
 
 .lens-card small {
@@ -412,7 +487,7 @@ h2 {
 .bar-fill {
   height: 100%;
   min-width: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  background: linear-gradient(90deg, var(--accent), #63a4ff);
   border-radius: 6px;
   transition: width 220ms ease;
 }
@@ -489,7 +564,7 @@ tbody tr:last-child td {
 
 .tag.masked {
   color: var(--warn);
-  background: var(--soft-orange);
+  background: var(--soft-yellow);
 }
 
 .policy-grid {
@@ -508,8 +583,8 @@ tbody tr:last-child td {
 }
 
 .policy-card.active {
-  border-color: var(--accent-2);
-  background: var(--soft-green);
+  border-color: var(--accent);
+  background: var(--soft-blue);
 }
 
 .policy-card h3 {
@@ -611,6 +686,7 @@ tbody tr:last-child td {
   .metrics,
   .policy-grid,
   .flow,
+  .insight-strip,
   .lens-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -632,6 +708,7 @@ tbody tr:last-child td {
   .metrics,
   .policy-grid,
   .flow,
+  .insight-strip,
   .lens-list {
     grid-template-columns: 1fr;
   }

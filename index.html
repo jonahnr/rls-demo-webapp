@@ -10,10 +10,15 @@
     <main class="shell">
       <section class="hero">
         <div>
-          <p class="eyebrow">Parallax governed access simulator</p>
-          <h1>Show how RLS changes safety reporting by site.</h1>
+          <p class="eyebrow">Parallax Data Lab governed access simulator</p>
+          <h1 id="heroTitle">
+            Show how Row Level Security (RLS) changes
+            <span id="heroLensWord">safety</span>
+            reporting by
+            <span id="heroByWord">site</span>.
+          </h1>
           <p class="lede">
-            Switch between site, safety, finance, and partner users. Then move across safety, cost, and compliance lenses to see how governed data controls who can inspect each location.
+            Switch between site, safety, finance, and partner users. Then move across governed reporting lenses to see how access changes by location, domain, and sensitivity.
           </p>
         </div>
         <div class="hero-panel" aria-label="RLS status summary">
@@ -31,6 +36,7 @@
           <div class="panel-header">
             <p class="eyebrow">Identity</p>
             <h2>Viewer context</h2>
+            <p class="context-note" id="viewerContext">Lens-specific access context will appear here.</p>
           </div>
           <div class="user-list" id="userList"></div>
 
@@ -71,9 +77,12 @@
             <div>
               <p class="eyebrow">Reporting lens</p>
               <h2 id="lensTitle">Safety risk</h2>
+              <p id="lensNarrative">Select a lens to see how RLS changes the report.</p>
             </div>
             <div class="lens-list" id="lensList"></div>
           </div>
+
+          <div class="insight-strip" id="insightStrip" aria-label="Governed analytics insight"></div>
 
           <div class="tabs" role="tablist" aria-label="Demo views">
             <button class="tab active" data-view="report" type="button">Report view</button>
@@ -125,8 +134,8 @@
               <p class="eyebrow">How it gets applied</p>
               <h2>RLS turns identity into report-specific filters</h2>
               <div class="flow">
-                <div><strong>1. User signs in</strong><span>Role, region, domain, and clearance are resolved.</span></div>
-                <div><strong>2. Data is classified</strong><span>Rows carry business domain, region, owner, and sensitivity tags.</span></div>
+                <div><strong>1. User signs in</strong><span>Role, site scope, domain, and clearance are resolved.</span></div>
+                <div><strong>2. Data is classified</strong><span>Rows carry site, business domain, owner, and sensitivity tags.</span></div>
                 <div><strong>3. Policies compile</strong><span>Rules translate those tags into filters and masks.</span></div>
                 <div><strong>4. Reports inherit controls</strong><span>Every dashboard query returns only approved records.</span></div>
               </div>
