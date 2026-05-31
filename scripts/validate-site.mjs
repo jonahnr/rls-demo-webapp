@@ -15,7 +15,9 @@ const css = await readFile("styles.css", "utf8");
 checks.push(["index.html links styles.css", html.includes('href="styles.css"')]);
 checks.push(["index.html loads app.js", html.includes('src="app.js"')]);
 checks.push(["RLS toggle exists", html.includes('id="rlsToggle"')]);
-checks.push(["user data exists", js.includes("const users") && js.includes("const rows")]);
+checks.push(["lens selector exists", html.includes('id="lensList"')]);
+checks.push(["user and safety record data exists", js.includes("const users") && js.includes("const records")]);
+checks.push(["three reporting lenses exist", js.includes('id: "safety"') && js.includes('id: "cost"') && js.includes('id: "compliance"')]);
 checks.push(["policy data exists", js.includes("const policies")]);
 checks.push(["responsive styles exist", css.includes("@media")]);
 

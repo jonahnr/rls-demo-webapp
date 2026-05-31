@@ -1,86 +1,140 @@
-const users = [
+const lenses = [
   {
-    id: "exec",
-    name: "Maya Chen",
-    title: "Chief Revenue Officer",
-    initials: "MC",
-    role: "Executive",
-    regions: ["North", "South", "East", "West"],
-    domains: ["Sales", "Finance"],
-    clearance: 3,
-    purpose: "Can compare companywide performance, including finance-adjusted revenue."
+    id: "safety",
+    title: "Safety risk",
+    shortTitle: "Safety",
+    domain: "Safety",
+    eyebrow: "Safety operations",
+    chartTitle: "Incident risk available to selected user",
+    tableTitle: "Site safety events",
+    valueHeader: "Risk score",
+    valueKey: "riskScore",
+    format: (value) => `${value}/100`,
+    aggregateLabel: "Visible risk",
+    aggregateHelp: "Risk score total across accessible site records.",
+    maskedText: "Masked",
+    description: "Incident rates, high-potential events, and corrective-action exposure by site."
   },
   {
-    id: "regional",
-    name: "Andre Brooks",
-    title: "West Regional Manager",
-    initials: "AB",
-    role: "Regional manager",
-    regions: ["West"],
-    domains: ["Sales"],
-    clearance: 2,
-    purpose: "Can manage the West pipeline but cannot inspect other regions."
+    id: "cost",
+    title: "Safety cost",
+    shortTitle: "Cost",
+    domain: "Finance",
+    eyebrow: "Cost stewardship",
+    chartTitle: "Safety-related cost available to selected user",
+    tableTitle: "Safety cost exposure",
+    valueHeader: "Cost exposure",
+    valueKey: "costExposure",
+    format: formatMoney,
+    aggregateLabel: "Visible cost",
+    aggregateHelp: "Claim, downtime, and remediation cost the viewer can inspect.",
+    maskedText: "Masked",
+    description: "Financial impact of safety events without exposing restricted finance rows."
   },
   {
-    id: "analyst",
-    name: "Priya Nair",
-    title: "Sales Operations Analyst",
-    initials: "PN",
-    role: "Analyst",
-    regions: ["North", "West"],
-    domains: ["Sales"],
-    clearance: 1,
-    purpose: "Can see sales activity in assigned regions with sensitive values masked."
-  },
-  {
-    id: "partner",
-    name: "Sam Rivera",
-    title: "External Partner",
-    initials: "SR",
-    role: "Partner",
-    regions: ["North"],
-    domains: ["Channel"],
-    clearance: 0,
-    purpose: "Can only see approved channel rows for one region."
+    id: "compliance",
+    title: "Compliance readiness",
+    shortTitle: "Compliance",
+    domain: "Compliance",
+    eyebrow: "Governance readiness",
+    chartTitle: "Open compliance actions available to selected user",
+    tableTitle: "Compliance action register",
+    valueHeader: "Open actions",
+    valueKey: "openActions",
+    format: (value) => `${value}`,
+    aggregateLabel: "Visible actions",
+    aggregateHelp: "Open items visible based on site scope and compliance entitlement.",
+    maskedText: "Restricted",
+    description: "Audit findings, overdue controls, and corrective-action ownership by location."
   }
 ];
 
-const rows = [
-  { account: "Aster Health", region: "North", domain: "Sales", revenue: 420000, sensitivity: 1, owner: "Field Sales" },
-  { account: "Brightline Foods", region: "South", domain: "Sales", revenue: 280000, sensitivity: 1, owner: "Field Sales" },
-  { account: "Corvus Energy", region: "West", domain: "Sales", revenue: 610000, sensitivity: 2, owner: "Enterprise Sales" },
-  { account: "Delta Transit", region: "East", domain: "Finance", revenue: 355000, sensitivity: 3, owner: "Finance" },
-  { account: "Evergreen Retail", region: "West", domain: "Sales", revenue: 190000, sensitivity: 1, owner: "Field Sales" },
-  { account: "ForgeBank", region: "North", domain: "Finance", revenue: 870000, sensitivity: 3, owner: "Finance" },
-  { account: "Harbor Media", region: "North", domain: "Channel", revenue: 135000, sensitivity: 0, owner: "Partner Sales" },
-  { account: "Ion Robotics", region: "West", domain: "Channel", revenue: 240000, sensitivity: 1, owner: "Partner Sales" },
-  { account: "Juniper Labs", region: "East", domain: "Sales", revenue: 510000, sensitivity: 2, owner: "Enterprise Sales" },
-  { account: "Keystone Apparel", region: "South", domain: "Channel", revenue: 95000, sensitivity: 0, owner: "Partner Sales" }
+const users = [
+  {
+    id: "safetyLead",
+    name: "Jordan Lee",
+    title: "Director of Safety",
+    initials: "JL",
+    role: "Safety leader",
+    sites: ["Denver", "Houston", "Reno", "Tampa"],
+    domains: ["Safety", "Compliance"],
+    clearance: 3,
+    purpose: "Can compare safety performance and compliance actions across all sites."
+  },
+  {
+    id: "siteManager",
+    name: "Andre Brooks",
+    title: "Houston Site Manager",
+    initials: "AB",
+    role: "Site manager",
+    sites: ["Houston"],
+    domains: ["Safety", "Compliance"],
+    clearance: 2,
+    purpose: "Can inspect safety and compliance records for one assigned location."
+  },
+  {
+    id: "finance",
+    name: "Maya Chen",
+    title: "Finance Business Partner",
+    initials: "MC",
+    role: "Finance partner",
+    sites: ["Denver", "Houston", "Reno", "Tampa"],
+    domains: ["Finance"],
+    clearance: 3,
+    purpose: "Can see safety cost exposure without accessing operational incident details."
+  },
+  {
+    id: "contractor",
+    name: "Sam Rivera",
+    title: "External Safety Partner",
+    initials: "SR",
+    role: "Partner",
+    sites: ["Denver", "Reno"],
+    domains: ["Safety"],
+    clearance: 1,
+    purpose: "Can only see low-sensitivity safety rows for approved partner locations."
+  }
+];
+
+const records = [
+  { name: "Forklift near miss", site: "Denver", domain: "Safety", riskScore: 72, costExposure: 48000, openActions: 4, sensitivity: 2, owner: "Operations" },
+  { name: "Confined space permit gap", site: "Houston", domain: "Safety", riskScore: 91, costExposure: 125000, openActions: 7, sensitivity: 2, owner: "EHS" },
+  { name: "PPE observation trend", site: "Reno", domain: "Safety", riskScore: 44, costExposure: 18000, openActions: 2, sensitivity: 1, owner: "Field Safety" },
+  { name: "Chemical storage audit", site: "Tampa", domain: "Compliance", riskScore: 63, costExposure: 64000, openActions: 5, sensitivity: 2, owner: "Compliance" },
+  { name: "Workers comp reserve", site: "Houston", domain: "Finance", riskScore: 69, costExposure: 310000, openActions: 3, sensitivity: 3, owner: "Finance" },
+  { name: "Machine guarding finding", site: "Reno", domain: "Compliance", riskScore: 78, costExposure: 87000, openActions: 6, sensitivity: 2, owner: "Compliance" },
+  { name: "Slip hazard cluster", site: "Denver", domain: "Safety", riskScore: 56, costExposure: 39000, openActions: 3, sensitivity: 1, owner: "Site Safety" },
+  { name: "Ergonomics claims review", site: "Tampa", domain: "Finance", riskScore: 51, costExposure: 156000, openActions: 2, sensitivity: 3, owner: "Finance" },
+  { name: "Emergency drill follow-up", site: "Houston", domain: "Compliance", riskScore: 38, costExposure: 22000, openActions: 8, sensitivity: 1, owner: "EHS" },
+  { name: "Vehicle incident review", site: "Denver", domain: "Finance", riskScore: 84, costExposure: 204000, openActions: 5, sensitivity: 3, owner: "Risk" },
+  { name: "Heat stress monitoring", site: "Tampa", domain: "Safety", riskScore: 67, costExposure: 52000, openActions: 4, sensitivity: 2, owner: "Field Safety" },
+  { name: "Training overdue sample", site: "Reno", domain: "Compliance", riskScore: 46, costExposure: 15000, openActions: 9, sensitivity: 1, owner: "Learning" }
 ];
 
 const policies = [
   {
-    id: "region",
-    title: "Region scope",
-    description: "Users only retrieve rows for assigned operating regions.",
-    code: "row.region IN viewer.regions"
+    id: "site",
+    title: "Site scope",
+    description: "Users only retrieve rows for locations assigned to their role or contract.",
+    code: "row.site IN viewer.sites"
   },
   {
     id: "domain",
     title: "Data domain entitlement",
-    description: "Certified domains decide which governed data products a user can query.",
+    description: "Safety, finance, and compliance lenses only query certified domains the user is allowed to use.",
     code: "row.domain IN viewer.domains"
   },
   {
     id: "sensitivity",
     title: "Sensitivity clearance",
-    description: "High-risk financial or account-level data is hidden or masked by clearance.",
+    description: "High-potential incidents, claims, and audit findings are hidden or masked by clearance.",
     code: "row.sensitivity <= viewer.clearance"
   }
 ];
 
 const state = {
-  userId: "regional",
+  userId: "siteManager",
+  lensId: "safety",
   rls: true,
   mask: true,
   showBlocked: false,
@@ -89,6 +143,8 @@ const state = {
 
 const els = {
   userList: document.querySelector("#userList"),
+  lensList: document.querySelector("#lensList"),
+  lensTitle: document.querySelector("#lensTitle"),
   rlsToggle: document.querySelector("#rlsToggle"),
   maskToggle: document.querySelector("#maskToggle"),
   blockedToggle: document.querySelector("#blockedToggle"),
@@ -101,6 +157,10 @@ const els = {
   heroVisibleRows: document.querySelector("#heroVisibleRows"),
   heroSummary: document.querySelector("#heroSummary"),
   tablePill: document.querySelector("#tablePill"),
+  tableTitle: document.querySelector("#tableTitle"),
+  chartEyebrow: document.querySelector("#chartEyebrow"),
+  chartTitle: document.querySelector("#chartTitle"),
+  valueHeader: document.querySelector("#valueHeader"),
   resetDemo: document.querySelector("#resetDemo")
 };
 
@@ -116,24 +176,28 @@ function getUser() {
   return users.find((user) => user.id === state.userId);
 }
 
-function evaluateRow(row, user) {
+function getLens() {
+  return lenses.find((lens) => lens.id === state.lensId);
+}
+
+function evaluateRecord(record, user, lens) {
   const checks = {
-    region: user.regions.includes(row.region),
-    domain: user.domains.includes(row.domain),
-    sensitivity: row.sensitivity <= user.clearance
+    site: user.sites.includes(record.site),
+    domain: user.domains.includes(record.domain) && record.domain === lens.domain,
+    sensitivity: record.sensitivity <= user.clearance
   };
-  const allowed = state.rls ? checks.region && checks.domain && checks.sensitivity : true;
-  const canMask = state.rls && state.mask && checks.region && checks.domain && !checks.sensitivity;
+  const allowed = state.rls ? checks.site && checks.domain && checks.sensitivity : true;
+  const canMask = state.rls && state.mask && checks.site && checks.domain && !checks.sensitivity;
   const visible = allowed || canMask || !state.rls;
   const reasons = [];
 
-  if (!checks.region) reasons.push(`Region blocked: ${row.region}`);
-  if (!checks.domain) reasons.push(`Domain blocked: ${row.domain}`);
-  if (!checks.sensitivity) reasons.push(`Sensitivity ${row.sensitivity} exceeds clearance ${user.clearance}`);
+  if (!checks.site) reasons.push(`Site blocked: ${record.site}`);
+  if (!checks.domain) reasons.push(`Domain blocked: ${record.domain} for ${lens.title}`);
+  if (!checks.sensitivity) reasons.push(`Sensitivity ${record.sensitivity} exceeds clearance ${user.clearance}`);
   if (!state.rls) reasons.push("RLS disabled for demo comparison");
 
   return {
-    ...row,
+    ...record,
     allowed,
     masked: canMask,
     visible,
@@ -141,9 +205,10 @@ function evaluateRow(row, user) {
   };
 }
 
-function getEvaluatedRows() {
+function getEvaluatedRecords() {
   const user = getUser();
-  return rows.map((row) => evaluateRow(row, user));
+  const lens = getLens();
+  return records.map((record) => evaluateRecord(record, user, lens));
 }
 
 function renderUsers() {
@@ -159,18 +224,29 @@ function renderUsers() {
   `).join("");
 }
 
+function renderLenses() {
+  els.lensList.innerHTML = lenses.map((lens) => `
+    <button class="lens-card ${lens.id === state.lensId ? "active" : ""}" data-lens="${lens.id}" type="button">
+      <strong>${lens.shortTitle}</strong>
+      <small>${lens.description}</small>
+    </button>
+  `).join("");
+  els.lensTitle.textContent = getLens().title;
+}
+
 function renderMetrics(evaluated) {
-  const allowed = evaluated.filter((row) => row.allowed);
-  const visible = evaluated.filter((row) => row.visible);
-  const blocked = state.rls ? evaluated.filter((row) => !row.visible) : [];
-  const masked = evaluated.filter((row) => row.masked);
-  const revenue = visible.reduce((sum, row) => sum + (row.masked ? 0 : row.revenue), 0);
+  const lens = getLens();
+  const visible = evaluated.filter((record) => record.visible);
+  const blocked = state.rls ? evaluated.filter((record) => !record.visible) : [];
+  const masked = evaluated.filter((record) => record.masked);
+  const aggregate = visible.reduce((sum, record) => sum + (record.masked ? 0 : record[lens.valueKey]), 0);
+  const siteCount = new Set(visible.map((record) => record.site)).size;
 
   const metricData = [
-    ["Visible rows", `${visible.length}/${rows.length}`, state.rls ? "Report only returns approved records." : "All rows are exposed while RLS is off."],
-    ["Visible revenue", formatMoney(revenue), masked.length ? `${masked.length} sensitive row values are masked.` : "No visible values require masking."],
-    ["Blocked records", blocked.length, "Rows removed before the report renders."],
-    ["Active policies", state.rls ? 3 : 0, state.rls ? "Region, domain, and clearance are active." : "Governance controls are bypassed."]
+    ["Visible records", `${visible.length}/${records.length}`, state.rls ? "Report only returns approved site records." : "All rows are exposed while RLS is off."],
+    [lens.aggregateLabel, lens.format(aggregate), masked.length ? `${masked.length} sensitive values are masked.` : lens.aggregateHelp],
+    ["Sites in view", siteCount, "Location scope is inherited by every reporting lens."],
+    ["Blocked records", blocked.length, "Rows removed before the dashboard query returns."]
   ];
 
   els.metrics.innerHTML = metricData.map(([label, value, help]) => `
@@ -183,46 +259,52 @@ function renderMetrics(evaluated) {
 
   els.heroMode.textContent = state.rls ? "RLS enabled" : "RLS disabled";
   els.heroMode.previousElementSibling.classList.toggle("active", state.rls);
-  els.heroVisibleRows.textContent = `${visible.length} of ${rows.length} rows visible`;
+  els.heroVisibleRows.textContent = `${visible.length} of ${records.length} rows visible`;
   els.heroSummary.textContent = state.rls
-    ? `${blocked.length} records are blocked before the dashboard query returns.`
+    ? `${blocked.length} site records are blocked for ${getUser().name} in the ${lens.title.toLowerCase()} lens.`
     : "Every governed row is visible, showing the risk RLS prevents.";
   els.tablePill.textContent = state.rls ? "Filtered by policy" : "Unrestricted";
+  els.chartEyebrow.textContent = lens.eyebrow;
+  els.chartTitle.textContent = lens.chartTitle;
+  els.tableTitle.textContent = lens.tableTitle;
+  els.valueHeader.textContent = lens.valueHeader;
 }
 
 function renderChart(evaluated) {
-  const visible = evaluated.filter((row) => row.visible);
-  const totals = ["North", "South", "East", "West"].map((region) => ({
-    region,
-    revenue: visible
-      .filter((row) => row.region === region && !row.masked)
-      .reduce((sum, row) => sum + row.revenue, 0)
+  const lens = getLens();
+  const visible = evaluated.filter((record) => record.visible);
+  const totals = ["Denver", "Houston", "Reno", "Tampa"].map((site) => ({
+    site,
+    value: visible
+      .filter((record) => record.site === site && !record.masked)
+      .reduce((sum, record) => sum + record[lens.valueKey], 0)
   }));
-  const max = Math.max(...totals.map((item) => item.revenue), 1);
+  const max = Math.max(...totals.map((item) => item.value), 1);
 
   els.barChart.innerHTML = totals.map((item) => `
     <div class="bar-row">
-      <strong>${item.region}</strong>
-      <div class="bar-track"><div class="bar-fill" style="width: ${(item.revenue / max) * 100}%"></div></div>
-      <span>${formatMoney(item.revenue).replace(".00", "")}</span>
+      <strong>${item.site}</strong>
+      <div class="bar-track"><div class="bar-fill" style="width: ${(item.value / max) * 100}%"></div></div>
+      <span>${lens.format(item.value)}</span>
     </div>
   `).join("");
 }
 
 function renderRows(evaluated) {
-  const rowsToRender = evaluated.filter((row) => row.visible || state.showBlocked);
+  const lens = getLens();
+  const rowsToRender = evaluated.filter((record) => record.visible || state.showBlocked);
 
-  els.reportRows.innerHTML = rowsToRender.map((row) => {
-    const status = row.allowed ? "Allowed" : row.masked ? "Masked" : "Blocked";
-    const tagClass = row.allowed ? "allowed" : row.masked ? "masked" : "blocked";
-    const revenue = row.masked ? "Masked" : formatMoney(row.revenue);
+  els.reportRows.innerHTML = rowsToRender.map((record) => {
+    const status = record.allowed ? "Allowed" : record.masked ? "Masked" : "Blocked";
+    const tagClass = record.allowed ? "allowed" : record.masked ? "masked" : "blocked";
+    const value = record.masked ? lens.maskedText : lens.format(record[lens.valueKey]);
     return `
-      <tr class="${!row.visible ? "blocked" : ""}">
-        <td>${row.account}</td>
-        <td>${row.region}</td>
-        <td>${row.domain}</td>
-        <td>${revenue}</td>
-        <td>Level ${row.sensitivity}</td>
+      <tr class="${!record.visible ? "blocked" : ""}">
+        <td>${record.name}</td>
+        <td>${record.site}</td>
+        <td>${record.domain}</td>
+        <td>${value}</td>
+        <td>Level ${record.sensitivity}</td>
         <td><span class="tag ${tagClass}">${status}</span></td>
       </tr>
     `;
@@ -241,17 +323,17 @@ function renderPolicies() {
 }
 
 function renderAudit(evaluated) {
-  els.auditList.innerHTML = evaluated.map((row) => {
-    const decision = row.allowed ? "Allow" : row.masked ? "Mask value" : "Deny row";
-    const tagClass = row.allowed ? "allowed" : row.masked ? "masked" : "blocked";
+  els.auditList.innerHTML = evaluated.map((record) => {
+    const decision = record.allowed ? "Allow" : record.masked ? "Mask value" : "Deny row";
+    const tagClass = record.allowed ? "allowed" : record.masked ? "masked" : "blocked";
     return `
       <article class="audit-item">
         <span class="tag ${tagClass}">${decision}</span>
         <div>
-          <strong>${row.account}</strong>
-          <small>${row.region} / ${row.domain} / sensitivity ${row.sensitivity}</small>
+          <strong>${record.name}</strong>
+          <small>${record.site} / ${record.domain} / sensitivity ${record.sensitivity}</small>
         </div>
-        <small>${row.reasons.join("; ")}</small>
+        <small>${record.reasons.join("; ")}</small>
       </article>
     `;
   }).join("");
@@ -267,8 +349,9 @@ function renderTabs() {
 }
 
 function render() {
-  const evaluated = getEvaluatedRows();
+  const evaluated = getEvaluatedRecords();
   renderUsers();
+  renderLenses();
   renderMetrics(evaluated);
   renderChart(evaluated);
   renderRows(evaluated);
@@ -282,10 +365,16 @@ function render() {
 
 document.addEventListener("click", (event) => {
   const userButton = event.target.closest("[data-user]");
+  const lensButton = event.target.closest("[data-lens]");
   const tabButton = event.target.closest("[data-view]");
 
   if (userButton) {
     state.userId = userButton.dataset.user;
+    render();
+  }
+
+  if (lensButton) {
+    state.lensId = lensButton.dataset.lens;
     render();
   }
 
@@ -311,7 +400,8 @@ els.blockedToggle.addEventListener("change", () => {
 });
 
 els.resetDemo.addEventListener("click", () => {
-  state.userId = "regional";
+  state.userId = "siteManager";
+  state.lensId = "safety";
   state.rls = true;
   state.mask = true;
   state.showBlocked = false;

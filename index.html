@@ -10,10 +10,10 @@
     <main class="shell">
       <section class="hero">
         <div>
-          <p class="eyebrow">Governed data access simulator</p>
-          <h1>Show how Row-Level Security changes reporting access.</h1>
+          <p class="eyebrow">Parallax governed access simulator</p>
+          <h1>Show how RLS changes safety reporting by site.</h1>
           <p class="lede">
-            Switch between business users, enable governance controls, and watch the same report reshape itself based on approved data domains, region scope, and sensitivity rules.
+            Switch between site, safety, finance, and partner users. Then move across safety, cost, and compliance lenses to see how governed data controls who can inspect each location.
           </p>
         </div>
         <div class="hero-panel" aria-label="RLS status summary">
@@ -67,6 +67,14 @@
         </aside>
 
         <section class="demo-stage">
+          <div class="lens-panel" aria-label="Reporting lens selector">
+            <div>
+              <p class="eyebrow">Reporting lens</p>
+              <h2 id="lensTitle">Safety risk</h2>
+            </div>
+            <div class="lens-list" id="lensList"></div>
+          </div>
+
           <div class="tabs" role="tablist" aria-label="Demo views">
             <button class="tab active" data-view="report" type="button">Report view</button>
             <button class="tab" data-view="policies" type="button">Policy map</button>
@@ -78,17 +86,17 @@
             <div class="report-layout">
               <div class="chart-panel">
                 <div class="section-heading">
-                  <p class="eyebrow">Executive report</p>
-                  <h2>Revenue available to selected user</h2>
+                  <p class="eyebrow" id="chartEyebrow">Safety operations</p>
+                  <h2 id="chartTitle">Incident risk available to selected user</h2>
                 </div>
-                <div class="bar-chart" id="barChart" aria-label="Revenue by region"></div>
+                <div class="bar-chart" id="barChart" aria-label="Metric by site"></div>
               </div>
 
               <div class="table-panel">
                 <div class="section-heading row">
                   <div>
                     <p class="eyebrow">Data product</p>
-                    <h2>Opportunity pipeline</h2>
+                    <h2 id="tableTitle">Site safety events</h2>
                   </div>
                   <span class="pill" id="tablePill">Filtered</span>
                 </div>
@@ -96,10 +104,10 @@
                   <table>
                     <thead>
                       <tr>
-                        <th>Account</th>
-                        <th>Region</th>
+                        <th>Record</th>
+                        <th>Site</th>
                         <th>Domain</th>
-                        <th>Revenue</th>
+                        <th id="valueHeader">Risk score</th>
                         <th>Sensitivity</th>
                         <th>Policy result</th>
                       </tr>

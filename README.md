@@ -1,13 +1,14 @@
 # RLS Governance Demo
 
-An interactive static web app that demonstrates how row-level security (RLS) and governed data structure change what different users can see in reporting.
+An interactive static web app that demonstrates how row-level security (RLS) and governed data structure change what different users can see in safety, cost, and compliance reporting.
 
-The demo lets viewers switch between personas, toggle RLS, reveal blocked records, and inspect the policy decisions behind each row.
+The demo lets viewers switch between personas, move across three reporting lenses, toggle RLS, reveal blocked records, and inspect the policy decisions behind each row.
 
 ## What It Shows
 
-- How the same report changes for different roles and entitlements
-- How region, data domain, and sensitivity policies filter report rows
+- How the same site data changes for different roles and entitlements
+- How site, data domain, and sensitivity policies filter report rows
+- How safety can be the primary lens while finance and compliance remain governed
 - How masking protects sensitive values while preserving approved context
 - How a governed data model creates auditable allow, deny, and mask decisions
 
@@ -37,14 +38,14 @@ npm test
 
 ## GitHub Pages Deployment
 
-The included workflow at `.github/workflows/pages.yml` validates the static site and deploys it to GitHub Pages on pushes to `main`.
+The included workflow at `.github/workflows/pages.yml` validates the static site and deploys it to GitHub Pages on pushes to `main` or `master`.
 
 To use it:
 
 1. Push this repository to GitHub.
 2. In GitHub, go to **Settings > Pages**.
 3. Set the source to **GitHub Actions**.
-4. Push to the `main` branch or run the workflow manually.
+4. Push to the `main` or `master` branch, or run the workflow manually.
 
 ## Files
 
