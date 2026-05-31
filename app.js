@@ -12,9 +12,10 @@ const lenses = [
     tableTitle: "Site safety events",
     valueHeader: "Risk score",
     valueKey: "riskScore",
+    aggregate: "average",
     format: (value) => `${value}/100`,
-    aggregateLabel: "Visible risk",
-    aggregateHelp: "Risk score total across accessible site records.",
+    aggregateLabel: "Avg visible risk",
+    aggregateHelp: "Average risk score across accessible safety events.",
     maskedText: "Masked",
     narrative: "Start with the operational safety lens: incidents, near misses, hazards, and high-potential events by location.",
     description: "Incident risk and high-potential events by site.",
@@ -39,6 +40,7 @@ const lenses = [
     tableTitle: "Safety cost exposure",
     valueHeader: "Cost exposure",
     valueKey: "costExposure",
+    aggregate: "sum",
     format: formatMoney,
     aggregateLabel: "Visible cost",
     aggregateHelp: "Claim, downtime, and remediation cost the viewer can inspect.",
@@ -66,6 +68,7 @@ const lenses = [
     tableTitle: "Compliance action register",
     valueHeader: "Open actions",
     valueKey: "openActions",
+    aggregate: "sum",
     format: (value) => `${value}`,
     aggregateLabel: "Visible actions",
     aggregateHelp: "Open items visible based on site scope and compliance entitlement.",
@@ -93,9 +96,10 @@ const lenses = [
     tableTitle: "Observation and training signals",
     valueHeader: "Signal score",
     valueKey: "leadingScore",
+    aggregate: "average",
     format: (value) => `${value}`,
-    aggregateLabel: "Visible signal",
-    aggregateHelp: "Proactive signal strength from observations, training, and hazard capture.",
+    aggregateLabel: "Avg signal",
+    aggregateHelp: "Average leading indicator score from accessible analytics rows.",
     maskedText: "Restricted",
     narrative: "Give safety teams analytics that show risk before incidents happen, without exposing every site or crew.",
     description: "Proactive signals from observations, training, and hazard trends.",
@@ -120,9 +124,10 @@ const lenses = [
     tableTitle: "Predictive intervention queue",
     valueHeader: "Risk forecast",
     valueKey: "forecastScore",
+    aggregate: "average",
     format: (value) => `${value}%`,
-    aggregateLabel: "Forecast load",
-    aggregateHelp: "Forecasted exposure score across visible intervention candidates.",
+    aggregateLabel: "Avg forecast",
+    aggregateHelp: "Average forecasted exposure across visible intervention candidates.",
     maskedText: "Restricted",
     narrative: "Show how governed data makes AI-ready safety analytics usable by the right teams without broad data exposure.",
     description: "Forecasted exposure and intervention queues by site.",
@@ -195,11 +200,15 @@ const records = [
   { name: "Emergency drill follow-up", site: "Houston", domain: "Compliance", riskScore: 38, costExposure: 22000, openActions: 8, leadingScore: 69, forecastScore: 41, sensitivity: 1, owner: "EHS" },
   { name: "Vehicle incident review", site: "Denver", domain: "Finance", riskScore: 84, costExposure: 204000, openActions: 5, leadingScore: 61, forecastScore: 82, sensitivity: 3, owner: "Risk" },
   { name: "Heat stress monitoring", site: "Tampa", domain: "Safety", riskScore: 67, costExposure: 52000, openActions: 4, leadingScore: 77, forecastScore: 69, sensitivity: 2, owner: "Field Safety" },
+  { name: "Line clearance observation", site: "Houston", domain: "Safety", riskScore: 64, costExposure: 41000, openActions: 3, leadingScore: 73, forecastScore: 62, sensitivity: 1, owner: "Operations" },
+  { name: "Lockout verification miss", site: "Houston", domain: "Safety", riskScore: 82, costExposure: 96000, openActions: 5, leadingScore: 70, forecastScore: 86, sensitivity: 2, owner: "EHS" },
   { name: "Training overdue sample", site: "Reno", domain: "Compliance", riskScore: 46, costExposure: 15000, openActions: 9, leadingScore: 72, forecastScore: 48, sensitivity: 1, owner: "Learning" },
   { name: "Observation completion drift", site: "Houston", domain: "Analytics", riskScore: 62, costExposure: 36000, openActions: 4, leadingScore: 86, forecastScore: 66, sensitivity: 2, owner: "Analytics" },
+  { name: "Near-miss reporting drop", site: "Houston", domain: "Analytics", riskScore: 71, costExposure: 42000, openActions: 4, leadingScore: 88, forecastScore: 76, sensitivity: 1, owner: "Analytics" },
   { name: "Supervisor coaching gap", site: "Denver", domain: "Analytics", riskScore: 58, costExposure: 28000, openActions: 3, leadingScore: 79, forecastScore: 61, sensitivity: 1, owner: "Analytics" },
   { name: "Night shift fatigue signal", site: "Reno", domain: "Analytics", riskScore: 76, costExposure: 74000, openActions: 6, leadingScore: 83, forecastScore: 84, sensitivity: 2, owner: "Analytics" },
   { name: "High-risk task forecast", site: "Houston", domain: "Analytics", riskScore: 88, costExposure: 118000, openActions: 5, leadingScore: 75, forecastScore: 91, sensitivity: 2, owner: "Data Science" },
+  { name: "Permit exception forecast", site: "Houston", domain: "Analytics", riskScore: 79, costExposure: 88000, openActions: 4, leadingScore: 73, forecastScore: 83, sensitivity: 2, owner: "Data Science" },
   { name: "Contractor exposure pattern", site: "Denver", domain: "Analytics", riskScore: 48, costExposure: 22000, openActions: 2, leadingScore: 67, forecastScore: 53, sensitivity: 1, owner: "Data Science" }
 ];
 
@@ -305,7 +314,20 @@ function evaluateRecord(record, user, lens) {
 function getEvaluatedRecords() {
   const user = getUser();
   const lens = getLens();
-  return records.map((record) => evaluateRecord(record, user, lens));
+  return records
+    .filter((record) => record.domain === lens.domain)
+    .map((record) => evaluateRecord(record, user, lens));
+}
+
+function summarizeValues(items, lens) {
+  const values = items
+    .filter((record) => !record.masked)
+    .map((record) => record[lens.valueKey]);
+
+  if (!values.length) return 0;
+
+  const total = values.reduce((sum, value) => sum + value, 0);
+  return lens.aggregate === "average" ? Math.round(total / values.length) : total;
 }
 
 function renderUsers() {
@@ -329,7 +351,6 @@ function renderLenses() {
     <button class="lens-card ${item.id === state.lensId ? "active" : ""}" data-lens="${item.id}" type="button">
       <span class="lens-chip">${item.chip}</span>
       <strong>${item.shortTitle}</strong>
-      <small>${item.description}</small>
     </button>
   `).join("");
   els.lensTitle.textContent = lens.title;
@@ -349,11 +370,11 @@ function renderMetrics(evaluated) {
   const visible = evaluated.filter((record) => record.visible);
   const blocked = state.rls ? evaluated.filter((record) => !record.visible) : [];
   const masked = evaluated.filter((record) => record.masked);
-  const aggregate = visible.reduce((sum, record) => sum + (record.masked ? 0 : record[lens.valueKey]), 0);
+  const aggregate = summarizeValues(visible, lens);
   const siteCount = new Set(visible.map((record) => record.site)).size;
 
   const metricData = [
-    ["Visible records", `${visible.length}/${records.length}`, state.rls ? "Report only returns approved site records." : "All rows are exposed while RLS is off."],
+    ["Visible records", `${visible.length}/${evaluated.length}`, state.rls ? "Denominator is scoped to this reporting lens." : "All rows in this lens are exposed while RLS is off."],
     [lens.aggregateLabel, lens.format(aggregate), masked.length ? `${masked.length} sensitive values are masked.` : lens.aggregateHelp],
     ["Sites in view", siteCount, "Location scope is inherited by every reporting lens."],
     ["Blocked records", blocked.length, "Rows removed before the dashboard query returns."]
@@ -369,13 +390,13 @@ function renderMetrics(evaluated) {
 
   els.heroMode.textContent = state.rls ? "RLS enabled" : "RLS disabled";
   els.heroMode.previousElementSibling.classList.toggle("active", state.rls);
-  els.heroVisibleRows.textContent = `${visible.length} of ${records.length} rows visible`;
+  els.heroVisibleRows.textContent = `${visible.length} of ${evaluated.length} rows visible`;
   els.heroSummary.textContent = state.rls
     ? `${blocked.length} records are blocked for ${getUser().name} in the ${lens.title.toLowerCase()} lens.`
     : "Every governed row is visible, showing the risk RLS prevents.";
   els.tablePill.textContent = state.rls ? "Filtered by policy" : "Unrestricted";
   els.chartEyebrow.textContent = lens.eyebrow;
-  els.chartTitle.textContent = lens.chartTitle;
+  els.chartTitle.textContent = lens.chartTitle.replace("selected user", getUser().name);
   els.tableTitle.textContent = lens.tableTitle;
   els.valueHeader.textContent = lens.valueHeader;
 }
@@ -385,9 +406,7 @@ function renderChart(evaluated) {
   const visible = evaluated.filter((record) => record.visible);
   const totals = ["Denver", "Houston", "Reno", "Tampa"].map((site) => ({
     site,
-    value: visible
-      .filter((record) => record.site === site && !record.masked)
-      .reduce((sum, record) => sum + record[lens.valueKey], 0)
+    value: summarizeValues(visible.filter((record) => record.site === site), lens)
   }));
   const max = Math.max(...totals.map((item) => item.value), 1);
 
