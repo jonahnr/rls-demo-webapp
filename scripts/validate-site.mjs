@@ -16,8 +16,10 @@ checks.push(["index.html links styles.css", html.includes('href="styles.css"')])
 checks.push(["index.html loads app.js", html.includes('src="app.js"')]);
 checks.push(["RLS toggle exists", html.includes('id="rlsToggle"')]);
 checks.push(["lens selector exists", html.includes('id="lensList"')]);
-checks.push(["user and safety record data exists", js.includes("const users") && js.includes("const records")]);
-checks.push(["five reporting lenses exist", js.includes('id: "safety"') && js.includes('id: "cost"') && js.includes('id: "compliance"') && js.includes('id: "leading"') && js.includes('id: "predictive"')]);
+checks.push(["scenario selector exists", html.includes('id="scenarioList"')]);
+checks.push(["scenario user and record data exists", js.includes("users: [") && js.includes("records: [")]);
+checks.push(["five lenses per scenario exist", js.includes('id: "risk"') && js.includes('id: "pipeline"') && js.includes('id: "predictive"') && js.includes('id: "adoption"')]);
+checks.push(["operational and commercial scenarios exist", js.includes('id: "operational"') && js.includes('id: "commercial"')]);
 checks.push(["policy data exists", js.includes("const policies")]);
 checks.push(["responsive styles exist", css.includes("@media")]);
 
