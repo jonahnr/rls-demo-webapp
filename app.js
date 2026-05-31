@@ -173,10 +173,10 @@ const scenarios = [
     eyebrow: "Second example",
     summary: "Revenue, customer health, margin, renewal risk, and pipeline analytics for non-operational audiences.",
     users: [
-      { id: "revenueLead", name: "Elena Park", title: "VP Revenue", initials: "EP", sites: ["Enterprise", "Mid-Market", "Public Sector", "Channel"], domains: ["Revenue", "Finance", "Analytics"], clearance: 3 },
-      { id: "accountManager", name: "Noah Grant", title: "Enterprise Account Manager", initials: "NG", sites: ["Enterprise"], domains: ["Revenue", "Analytics"], clearance: 2 },
+      { id: "revenueLead", name: "Elena Park", title: "VP Revenue", initials: "EP", sites: ["Enterprise", "Mid-Market", "Public Sector", "Channel"], domains: ["Revenue", "Customer", "Finance", "Analytics", "Product"], clearance: 3 },
+      { id: "accountManager", name: "Noah Grant", title: "Enterprise Account Manager", initials: "NG", sites: ["Enterprise"], domains: ["Revenue", "Customer", "Analytics", "Product"], clearance: 2 },
       { id: "finance", name: "Maya Chen", title: "Finance Business Partner", initials: "MC", sites: ["Enterprise", "Mid-Market", "Public Sector", "Channel"], domains: ["Finance"], clearance: 3 },
-      { id: "partner", name: "Sam Rivera", title: "Channel Partner", initials: "SR", sites: ["Channel"], domains: ["Revenue"], clearance: 1 }
+      { id: "partner", name: "Sam Rivera", title: "Channel Partner", initials: "SR", sites: ["Channel"], domains: ["Revenue", "Product"], clearance: 1 }
     ],
     lenses: [
       {
@@ -211,7 +211,7 @@ const scenarios = [
         title: "Customer health",
         shortTitle: "Health",
         chip: "Success",
-        domain: "Revenue",
+        domain: "Customer",
         heroWord: "customer health",
         byWord: "segment",
         eyebrow: "Customer analytics",
@@ -230,7 +230,7 @@ const scenarios = [
           revenueLead: "Sees health signals across all customer segments.",
           accountManager: "Sees Enterprise customer health signals only.",
           finance: "Finance does not receive named customer health signals in this lens.",
-          partner: "Partners see low-sensitivity channel health signals only."
+          partner: "Partners do not receive internal customer health records unless explicitly entitled."
         }
       },
       {
@@ -292,7 +292,7 @@ const scenarios = [
         title: "Adoption signals",
         shortTitle: "Adoption",
         chip: "Product",
-        domain: "Analytics",
+        domain: "Product",
         heroWord: "adoption",
         byWord: "account tier",
         eyebrow: "Product analytics",
@@ -316,23 +316,31 @@ const scenarios = [
       }
     ],
     records: [
-      { name: "Aster Health expansion", site: "Enterprise", domain: "Revenue", pipelineValue: 420000, healthScore: 82, marginImpact: 125000, renewalRisk: 31, adoptionScore: 78, sensitivity: 2 },
-      { name: "Corvus Energy platform", site: "Enterprise", domain: "Revenue", pipelineValue: 610000, healthScore: 68, marginImpact: 188000, renewalRisk: 44, adoptionScore: 71, sensitivity: 2 },
-      { name: "Delta Transit renewal", site: "Public Sector", domain: "Revenue", pipelineValue: 355000, healthScore: 74, marginImpact: 92000, renewalRisk: 39, adoptionScore: 73, sensitivity: 2 },
-      { name: "Harbor Media partner deal", site: "Channel", domain: "Revenue", pipelineValue: 135000, healthScore: 79, marginImpact: 41000, renewalRisk: 28, adoptionScore: 75, sensitivity: 1 },
+      { name: "Aster Health expansion", site: "Enterprise", domain: "Revenue", pipelineValue: 420000, healthScore: 0, marginImpact: 0, renewalRisk: 0, adoptionScore: 0, sensitivity: 2 },
+      { name: "Corvus Energy platform", site: "Enterprise", domain: "Revenue", pipelineValue: 610000, healthScore: 0, marginImpact: 0, renewalRisk: 0, adoptionScore: 0, sensitivity: 2 },
+      { name: "Delta Transit renewal", site: "Public Sector", domain: "Revenue", pipelineValue: 355000, healthScore: 0, marginImpact: 0, renewalRisk: 0, adoptionScore: 0, sensitivity: 2 },
+      { name: "Harbor Media partner deal", site: "Channel", domain: "Revenue", pipelineValue: 135000, healthScore: 0, marginImpact: 0, renewalRisk: 0, adoptionScore: 0, sensitivity: 1 },
+      { name: "Aster Health engagement", site: "Enterprise", domain: "Customer", pipelineValue: 0, healthScore: 82, marginImpact: 0, renewalRisk: 0, adoptionScore: 0, sensitivity: 2 },
+      { name: "Corvus executive sponsor gap", site: "Enterprise", domain: "Customer", pipelineValue: 0, healthScore: 68, marginImpact: 0, renewalRisk: 0, adoptionScore: 0, sensitivity: 2 },
+      { name: "Delta Transit service pulse", site: "Public Sector", domain: "Customer", pipelineValue: 0, healthScore: 74, marginImpact: 0, renewalRisk: 0, adoptionScore: 0, sensitivity: 2 },
+      { name: "Harbor Media channel health", site: "Channel", domain: "Customer", pipelineValue: 0, healthScore: 79, marginImpact: 0, renewalRisk: 0, adoptionScore: 0, sensitivity: 1 },
       { name: "Enterprise discount review", site: "Enterprise", domain: "Finance", pipelineValue: 0, healthScore: 0, marginImpact: 260000, renewalRisk: 0, adoptionScore: 0, sensitivity: 3 },
       { name: "Channel rebate exposure", site: "Channel", domain: "Finance", pipelineValue: 0, healthScore: 0, marginImpact: 87000, renewalRisk: 0, adoptionScore: 0, sensitivity: 3 },
       { name: "Aster renewal forecast", site: "Enterprise", domain: "Analytics", pipelineValue: 0, healthScore: 84, marginImpact: 0, renewalRisk: 58, adoptionScore: 83, sensitivity: 2 },
       { name: "Corvus adoption drift", site: "Enterprise", domain: "Analytics", pipelineValue: 0, healthScore: 66, marginImpact: 0, renewalRisk: 63, adoptionScore: 61, sensitivity: 2 },
       { name: "Channel expansion signal", site: "Channel", domain: "Analytics", pipelineValue: 0, healthScore: 76, marginImpact: 0, renewalRisk: 34, adoptionScore: 82, sensitivity: 1 },
-      { name: "Mid-market activation cohort", site: "Mid-Market", domain: "Analytics", pipelineValue: 0, healthScore: 71, marginImpact: 0, renewalRisk: 42, adoptionScore: 69, sensitivity: 1 }
+      { name: "Mid-market activation cohort", site: "Mid-Market", domain: "Analytics", pipelineValue: 0, healthScore: 71, marginImpact: 0, renewalRisk: 42, adoptionScore: 69, sensitivity: 1 },
+      { name: "Aster workflow adoption", site: "Enterprise", domain: "Product", pipelineValue: 0, healthScore: 0, marginImpact: 0, renewalRisk: 0, adoptionScore: 83, sensitivity: 2 },
+      { name: "Corvus feature adoption", site: "Enterprise", domain: "Product", pipelineValue: 0, healthScore: 0, marginImpact: 0, renewalRisk: 0, adoptionScore: 61, sensitivity: 2 },
+      { name: "Channel expansion usage", site: "Channel", domain: "Product", pipelineValue: 0, healthScore: 0, marginImpact: 0, renewalRisk: 0, adoptionScore: 82, sensitivity: 1 },
+      { name: "Mid-market activation usage", site: "Mid-Market", domain: "Product", pipelineValue: 0, healthScore: 0, marginImpact: 0, renewalRisk: 0, adoptionScore: 69, sensitivity: 1 }
     ]
   }
 ];
 
 const policies = [
   { title: "Scope", description: "Users only retrieve rows for assigned sites, segments, or portfolios.", code: "row.scope IN viewer.scope" },
-  { title: "Domain entitlement", description: "Each lens queries one governed domain that the viewer must be entitled to access.", code: "row.domain = lens.domain AND row.domain IN viewer.domains" },
+  { title: "Domain entitlement", description: "Each lens queries one governed domain such as Operational, Revenue, Customer, Finance, Analytics, or Product.", code: "row.domain = lens.domain AND row.domain IN viewer.domains" },
   { title: "Sensitivity clearance", description: "Restricted rows are hidden or masked by clearance level.", code: "row.sensitivity <= viewer.clearance" }
 ];
 

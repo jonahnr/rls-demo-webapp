@@ -10,6 +10,7 @@ The demo lets viewers switch between business scenarios, personas, and reporting
 - How site, data domain, and sensitivity policies filter report rows
 - How operational analytics can be the featured use case while commercial analytics shows the same RLS pattern outside operations
 - How leading indicators and predictive analytics can be shared without opening every row
+- How one governed report can replace many one-off dashboards for different audiences
 - How masking protects sensitive values while preserving approved context
 - How a governed data model creates auditable allow, deny, and mask decisions
 
