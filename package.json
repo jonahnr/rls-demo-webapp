@@ -1,0 +1,11 @@
+{
+  "name": "rls-governance-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive static demo showing how row-level security and governed data access change reporting.",
+  "type": "module",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "test": "node scripts/validate-site.mjs"
+  }
+}
