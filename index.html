@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RLS Governance Demo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Governed data access simulator</p>
+          <h1>Show how Row-Level Security changes reporting access.</h1>
+          <p class="lede">
+            Switch between business users, enable governance controls, and watch the same report reshape itself based on approved data domains, region scope, and sensitivity rules.
+          </p>
+        </div>
+        <div class="hero-panel" aria-label="RLS status summary">
+          <div>
+            <span class="status-dot active"></span>
+            <span id="heroMode">RLS enabled</span>
+          </div>
+          <strong id="heroVisibleRows">0 of 0 rows visible</strong>
+          <p id="heroSummary">Policies are filtering the report.</p>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Interactive RLS demo">
+        <aside class="control-panel">
+          <div class="panel-header">
+            <p class="eyebrow">Identity</p>
+            <h2>Viewer context</h2>
+          </div>
+          <div class="user-list" id="userList"></div>
+
+          <div class="divider"></div>
+
+          <div class="panel-header compact">
+            <p class="eyebrow">Policy engine</p>
+            <h2>RLS enablement</h2>
+          </div>
+
+          <label class="toggle-row">
+            <span>
+              <strong>Apply row-level security</strong>
+              <small>Filter report rows by governed entitlement rules.</small>
+            </span>
+            <input id="rlsToggle" type="checkbox" checked />
+          </label>
+
+          <label class="toggle-row">
+            <span>
+              <strong>Mask restricted values</strong>
+              <small>Keep rows visible while protecting sensitive fields.</small>
+            </span>
+            <input id="maskToggle" type="checkbox" checked />
+          </label>
+
+          <label class="toggle-row">
+            <span>
+              <strong>Show blocked records</strong>
+              <small>Reveal what governance removed from the report.</small>
+            </span>
+            <input id="blockedToggle" type="checkbox" />
+          </label>
+        </aside>
+
+        <section class="demo-stage">
+          <div class="tabs" role="tablist" aria-label="Demo views">
+            <button class="tab active" data-view="report" type="button">Report view</button>
+            <button class="tab" data-view="policies" type="button">Policy map</button>
+            <button class="tab" data-view="audit" type="button">Access audit</button>
+          </div>
+
+          <section class="view active" id="reportView">
+            <div class="metrics" id="metrics"></div>
+            <div class="report-layout">
+              <div class="chart-panel">
+                <div class="section-heading">
+                  <p class="eyebrow">Executive report</p>
+                  <h2>Revenue available to selected user</h2>
+                </div>
+                <div class="bar-chart" id="barChart" aria-label="Revenue by region"></div>
+              </div>
+
+              <div class="table-panel">
+                <div class="section-heading row">
+                  <div>
+                    <p class="eyebrow">Data product</p>
+                    <h2>Opportunity pipeline</h2>
+                  </div>
+                  <span class="pill" id="tablePill">Filtered</span>
+                </div>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Account</th>
+                        <th>Region</th>
+                        <th>Domain</th>
+                        <th>Revenue</th>
+                        <th>Sensitivity</th>
+                        <th>Policy result</th>
+                      </tr>
+                    </thead>
+                    <tbody id="reportRows"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" id="policiesView">
+            <div class="policy-grid" id="policyGrid"></div>
+            <div class="explain-panel">
+              <p class="eyebrow">How it gets applied</p>
+              <h2>RLS turns identity into report-specific filters</h2>
+              <div class="flow">
+                <div><strong>1. User signs in</strong><span>Role, region, domain, and clearance are resolved.</span></div>
+                <div><strong>2. Data is classified</strong><span>Rows carry business domain, region, owner, and sensitivity tags.</span></div>
+                <div><strong>3. Policies compile</strong><span>Rules translate those tags into filters and masks.</span></div>
+                <div><strong>4. Reports inherit controls</strong><span>Every dashboard query returns only approved records.</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" id="auditView">
+            <div class="audit-header">
+              <div>
+                <p class="eyebrow">Access audit</p>
+                <h2>Policy decisions for the selected viewer</h2>
+              </div>
+              <button class="secondary-btn" id="resetDemo" type="button">Reset demo</button>
+            </div>
+            <div class="audit-list" id="auditList"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
