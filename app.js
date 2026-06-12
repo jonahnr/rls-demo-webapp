@@ -373,6 +373,7 @@ const els = {
   barChart: document.querySelector("#barChart"),
   policyGrid: document.querySelector("#policyGrid"),
   auditList: document.querySelector("#auditList"),
+  guideSteps: document.querySelectorAll("[data-guide]"),
   heroMode: document.querySelector("#heroMode"),
   heroVisibleRows: document.querySelector("#heroVisibleRows"),
   heroSummary: document.querySelector("#heroSummary"),
@@ -542,7 +543,26 @@ function renderChart(evaluated) {
 
 function renderRows(evaluated) {
   const lens = getLens();
+  const user = getUser();
   const rowsToRender = evaluated.filter((record) => record.visible || state.showBlocked);
+
+  if (!rowsToRender.length) {
+    const blocked = evaluated.length;
+    const auditPrompt = state.rls
+      ? "Open Access audit to show the deny reasons, or switch to a finance-entitled viewer."
+      : "No rows match this reporting lens.";
+    els.reportRows.innerHTML = `
+      <tr class="empty-row">
+        <td colspan="6">
+          <div class="empty-state">
+            <strong>All ${blocked} ${lens.title.toLowerCase()} records are blocked for ${user.name}.</strong>
+            <p>${auditPrompt}</p>
+          </div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
 
   els.reportRows.innerHTML = rowsToRender.map((record) => {
     const status = record.allowed ? "Allowed" : record.masked ? "Masked" : "Blocked";
@@ -594,6 +614,18 @@ function renderTabs() {
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active", view.id === `${state.view}View`));
 }
 
+function renderGuideSteps() {
+  els.guideSteps.forEach((step) => {
+    const guide = step.dataset.guide;
+    const active =
+      (guide === "viewer" && state.rls && state.view === "report" && state.userId.includes("Manager")) ||
+      (guide === "compare" && !state.rls) ||
+      (guide === "lens" && state.view === "report" && ["predictive", "margin", "renewal"].includes(state.lensId)) ||
+      (guide === "audit" && state.view === "audit");
+    step.classList.toggle("active", active);
+  });
+}
+
 function render() {
   const evaluated = getEvaluatedRecords();
   renderScenarios();
@@ -605,6 +637,7 @@ function render() {
   renderPolicies();
   renderAudit(evaluated);
   renderTabs();
+  renderGuideSteps();
   els.rlsToggle.checked = state.rls;
   els.maskToggle.checked = state.mask;
   els.blockedToggle.checked = state.showBlocked;
@@ -618,12 +651,46 @@ function switchScenario(scenarioId) {
   render();
 }
 
+function runGuideStep(guide) {
+  if (guide === "viewer") {
+    state.scenarioId = "operational";
+    state.userId = "siteManager";
+    state.lensId = "risk";
+    state.rls = true;
+    state.showBlocked = false;
+    state.view = "report";
+  }
+
+  if (guide === "compare") {
+    state.rls = false;
+    state.showBlocked = true;
+    state.view = "report";
+  }
+
+  if (guide === "lens") {
+    state.rls = true;
+    state.showBlocked = false;
+    state.view = "report";
+    state.lensId = state.scenarioId === "operational" ? "predictive" : "renewal";
+  }
+
+  if (guide === "audit") {
+    state.rls = true;
+    state.showBlocked = true;
+    state.view = "audit";
+  }
+
+  render();
+}
+
 document.addEventListener("click", (event) => {
   const scenarioButton = event.target.closest("[data-scenario]");
   const userButton = event.target.closest("[data-user]");
   const lensButton = event.target.closest("[data-lens]");
   const tabButton = event.target.closest("[data-view]");
+  const guideButton = event.target.closest("[data-guide]");
 
+  if (guideButton) runGuideStep(guideButton.dataset.guide);
   if (scenarioButton) switchScenario(scenarioButton.dataset.scenario);
   if (userButton) {
     state.userId = userButton.dataset.user;

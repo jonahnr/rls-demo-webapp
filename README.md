@@ -4,6 +4,13 @@ An interactive static web app that demonstrates how row-level security (RLS) and
 
 The demo lets viewers switch between business scenarios, personas, and reporting lenses; toggle RLS; reveal blocked records; and inspect the policy decisions behind each row.
 
+The first screen now includes a Parallax-branded guided demo path so a presenter can run the story directly from the page:
+
+1. Choose a scoped viewer.
+2. Toggle RLS off to reveal the unrestricted comparison.
+3. Switch reporting lenses to show policy reuse.
+4. Open Access audit to explain the allow, deny, and mask decisions.
+
 ## What It Shows
 
 - How the same site data changes for different roles and entitlements
@@ -13,6 +20,7 @@ The demo lets viewers switch between business scenarios, personas, and reporting
 - How one governed report can replace many one-off dashboards for different audiences
 - How masking protects sensitive values while preserving approved context
 - How a governed data model creates auditable allow, deny, and mask decisions
+- How empty states explain when every row is blocked for a viewer instead of leaving a blank report
 
 ## Run Locally
 

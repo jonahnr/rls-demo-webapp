@@ -8,6 +8,14 @@
   </head>
   <body>
     <main class="shell">
+      <header class="brand-bar" aria-label="Parallax Data Lab brand">
+        <img src="assets/parallax-logo.png" alt="Parallax Data Lab" />
+        <div>
+          <span>Customer demo</span>
+          <strong>Governed analytics command center</strong>
+        </div>
+      </header>
+
       <section class="hero">
         <div>
           <p class="eyebrow">Parallax Data Lab governed access simulator</p>
@@ -21,14 +29,52 @@
             Build one governed report experience instead of maintaining a separate dashboard for every user, team, or permission pattern.
           </p>
         </div>
-        <div class="hero-panel" aria-label="RLS status summary">
-          <div>
-            <span class="status-dot active"></span>
-            <span id="heroMode">RLS enabled</span>
+        <div class="hero-stack">
+          <div class="hero-panel" aria-label="RLS status summary">
+            <div>
+              <span class="status-dot active"></span>
+              <span id="heroMode">RLS enabled</span>
+            </div>
+            <strong id="heroVisibleRows">0 of 0 rows visible</strong>
+            <p id="heroSummary">Policies are filtering the report.</p>
           </div>
-          <strong id="heroVisibleRows">0 of 0 rows visible</strong>
-          <p id="heroSummary">Policies are filtering the report.</p>
+          <div class="presenter-card" aria-label="Presenter path summary">
+            <span>Demo path</span>
+            <strong>Show the same report through different permissions.</strong>
+            <p>Start with Andre, turn RLS off, then open Access audit to explain the decision trail.</p>
+          </div>
         </div>
+      </section>
+
+      <section class="demo-path" aria-label="Guided demo path">
+        <button class="path-step active" data-guide="viewer" type="button">
+          <span>1</span>
+          <div>
+            <strong>Choose a viewer</strong>
+            <p>Start with a site manager or account owner to show scoped access.</p>
+          </div>
+        </button>
+        <button class="path-step" data-guide="compare" type="button">
+          <span>2</span>
+          <div>
+            <strong>Toggle RLS off</strong>
+            <p>Reveal the risk of an unrestricted report in one click.</p>
+          </div>
+        </button>
+        <button class="path-step" data-guide="lens" type="button">
+          <span>3</span>
+          <div>
+            <strong>Switch lenses</strong>
+            <p>Show the same policy pattern across finance, compliance, AI, and customer data.</p>
+          </div>
+        </button>
+        <button class="path-step" data-guide="audit" type="button">
+          <span>4</span>
+          <div>
+            <strong>Open Access audit</strong>
+            <p>Close with explainable allow, deny, and mask decisions.</p>
+          </div>
+        </button>
       </section>
 
       <section class="workspace" aria-label="Interactive RLS demo">
